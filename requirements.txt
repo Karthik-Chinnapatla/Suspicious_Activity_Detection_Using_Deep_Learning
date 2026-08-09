@@ -1,6 +1,6 @@
 Django>=4.2,<6.0
 opencv-python-headless>=4.8
-tensorflow-cpu>=2.16.1
+tensorflow-cpu>=2.15
 pillow>=10.0
 numpy>=1.24
 whitenoise>=6.5
