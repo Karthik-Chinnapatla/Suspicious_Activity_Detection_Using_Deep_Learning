@@ -1,0 +1,119 @@
+{% extends 'detection/base.html' %}
+{% load static %}
+
+{% block title %}Security Monitoring System | Suspicious Activity Detection{% endblock %}
+
+{% block content %}
+<div class="container hero-section">
+    <!-- Hero Section: Two Column Layout -->
+    <div class="row align-items-center g-5 mb-5">
+        
+        <!-- LEFT SIDE: CCTV Camera Image -->
+        <div class="col-12 col-lg-6">
+            <div class="hero-image-wrapper">
+                <img src="{% static 'detection/images/cctv_hero.png' %}" alt="CCTV Security Camera Monitoring" class="hero-cctv-img">
+                <div class="hero-hud-badge">
+                    <div class="pulse-dot-red"></div>
+                    <span>CAM ACTIVE FEED</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- RIGHT SIDE: Content & Get Started CTA -->
+        <div class="col-12 col-lg-6">
+            <div class="pe-lg-3">
+                <div class="d-inline-flex align-items-center gap-2 mb-3">
+                    <span class="hero-feature-pill">
+                        <i class="fa-solid fa-shield-halved"></i> 24/7 Active Surveillance
+                    </span>
+                    <span class="hero-feature-pill" style="background: rgba(16, 185, 129, 0.1); color: var(--success-green); border-color: rgba(16, 185, 129, 0.2);">
+                        <i class="fa-solid fa-circle-check"></i> System Online
+                    </span>
+                </div>
+
+                <h1 class="hero-title">
+                    <span class="hero-title-highlight">Security Monitoring</span> & <span class="hero-title-accent">Surveillance System</span>
+                </h1>
+
+                <p class="hero-description typing-cursor" id="typing-description">
+                    Monitor video streams and detect suspicious activities through continuous surveillance analysis. Stay alert with instant event detection, video frame processing, and comprehensive security log tracking for full perimeter protection.
+                </p>
+
+                <!-- Primary CTA: Get Started -->
+                <div class="d-flex flex-wrap align-items-center gap-3">
+                    <a href="{% url 'login' %}" class="btn btn-cyber btn-lg px-4 py-3 shadow-lg fs-5">
+                        <i class="fa-solid fa-arrow-right-to-bracket me-2"></i> Get Started
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Security Capabilities Feature Cards -->
+    <div class="row g-4 mt-2">
+        <div class="col-12 col-md-4">
+            <div class="glass-card p-4 h-100">
+                <div class="stat-icon primary mb-3">
+                    <i class="fa-solid fa-video"></i>
+                </div>
+                <h5 class="font-heading text-white mb-2">Video Stream Monitoring</h5>
+                <p class="text-secondary small mb-0">
+                    Process security camera footage and analyze sequential video frames for immediate situational awareness.
+                </p>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-4">
+            <div class="glass-card p-4 h-100">
+                <div class="stat-icon danger mb-3">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                </div>
+                <h5 class="font-heading text-white mb-2">Suspicious Activity Alerts</h5>
+                <p class="text-secondary small mb-0">
+                    Identify potential threats, fights, fires, or unauthorized physical behaviors with confidence metrics.
+                </p>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-4">
+            <div class="glass-card p-4 h-100">
+                <div class="stat-icon success mb-3">
+                    <i class="fa-solid fa-clock-rotate-left"></i>
+                </div>
+                <h5 class="font-heading text-white mb-2">Security Audit Logs</h5>
+                <p class="text-secondary small mb-0">
+                    Maintain detailed historical detection logs with filtered search, video playbacks, and timestamps.
+                </p>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const textToType = "Monitor video streams and detect suspicious activities through continuous surveillance analysis. Stay alert with instant event detection, video frame processing, and comprehensive security log tracking for full perimeter protection.";
+    const typingElement = document.getElementById('typing-description');
+    
+    if (typingElement) {
+        typingElement.textContent = "";
+        let charIndex = 0;
+        
+        function typeNextChar() {
+            if (charIndex < textToType.length) {
+                typingElement.textContent += textToType.charAt(charIndex);
+                charIndex++;
+                setTimeout(typeNextChar, 22);
+            } else {
+                typingElement.classList.remove('typing-cursor');
+            }
+        }
+        
+        setTimeout(typeNextChar, 300);
+    }
+});
+</script>
+{% endblock %}

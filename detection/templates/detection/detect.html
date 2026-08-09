@@ -1,0 +1,108 @@
+{% extends 'detection/base.html' %}
+
+{% block title %}Upload Video for Detection | CCTV System{% endblock %}
+
+{% block content %}
+<div class="container py-4" style="max-width: 900px;">
+
+    <!-- Page Title Header -->
+    <div class="text-center mb-4">
+        <h2 class="font-heading text-white mb-2"><i class="fa-solid fa-video text-info me-2"></i> Surveillance Video Detection</h2>
+        <p class="text-secondary small">Upload security or CCTV video footage to extract frames and detect suspicious activities using CNN.</p>
+    </div>
+
+    <!-- Upload Card -->
+    <div class="glass-card mb-4">
+        <div class="glass-card-body p-4">
+
+            <form method="post" enctype="multipart/form-data" id="video_upload_form" action="{% url 'detect' %}">
+                {% csrf_token %}
+
+                <!-- Drag and Drop Dropzone -->
+                <div class="upload-dropzone mb-4" id="upload_dropzone">
+                    <i class="fa-solid fa-cloud-arrow-up upload-icon"></i>
+                    <h5 class="text-white font-heading mb-1">Drag & Drop Surveillance Video Here</h5>
+                    <p class="text-secondary small mb-3">or click to browse your local device</p>
+                    
+                    <div class="d-flex justify-content-center flex-wrap gap-2 mb-2">
+                        <span class="badge bg-dark border border-secondary text-muted font-mono">.MP4</span>
+                        <span class="badge bg-dark border border-secondary text-muted font-mono">.AVI</span>
+                        <span class="badge bg-dark border border-secondary text-muted font-mono">.MOV</span>
+                        <span class="badge bg-dark border border-secondary text-muted font-mono">.MKV</span>
+                    </div>
+                    <span class="text-muted extra-small">Maximum upload file size: 100 MB</span>
+
+                    <!-- Hidden Input file field -->
+                    <div style="display: none;">
+                        {{ form.uploaded_video }}
+                    </div>
+                </div>
+
+                <!-- Selected File Info Box (Shown on file selection) -->
+                <div id="file_details_box" class="glass-card p-3 mb-4 border-info" style="display: none; background: rgba(56, 189, 248, 0.08);">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div class="d-flex align-items-center gap-3">
+                            <i class="fa-solid fa-file-video text-info fs-2"></i>
+                            <div>
+                                <h6 class="text-white mb-0 font-heading" id="selected_file_name">selected_file.mp4</h6>
+                                <span class="text-info small font-mono" id="selected_file_size">0 MB</span>
+                            </div>
+                        </div>
+                        <span class="badge bg-info text-dark font-mono"><i class="fa-solid fa-check me-1"></i> READY TO PROCESS</span>
+                    </div>
+                </div>
+
+                <!-- Sampling Rate Selection -->
+                <div class="mb-4">
+                    <label class="form-label text-muted small text-uppercase font-mono me-2">
+                        <i class="fa-solid fa-sliders text-info me-1"></i> Frame Extraction Sampling Strategy
+                    </label>
+                    {{ form.sample_rate }}
+                    <small class="text-muted d-block mt-1">Sampling extracts 1 frame every N frames. Lower values increase frame inspection density; higher values speed up processing.</small>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="btn btn-cyber w-100 py-3 justify-content-center fs-5" id="start_detection_btn">
+                    <i class="fa-solid fa-microchip me-2"></i> Start CNN Suspicious Activity Analysis
+                </button>
+            </form>
+
+        </div>
+    </div>
+
+    <!-- Instructions / Guide Box -->
+    <div class="glass-card p-4">
+        <h6 class="font-heading text-white mb-3"><i class="fa-solid fa-circle-info text-info me-2"></i> How CNN Suspicious Activity Recognition Works</h6>
+        <div class="row g-3 text-secondary small">
+            <div class="col-12 col-md-4">
+                <div class="d-flex gap-2">
+                    <span class="badge bg-primary rounded-circle p-2 font-mono" style="width:26px; height:26px;">1</span>
+                    <div>
+                        <strong class="text-white d-block">Frame Extraction</strong>
+                        OpenCV opens the video stream and extracts RGB frames sequentially.
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-4">
+                <div class="d-flex gap-2">
+                    <span class="badge bg-primary rounded-circle p-2 font-mono" style="width:26px; height:26px;">2</span>
+                    <div>
+                        <strong class="text-white d-block">CNN Tensor Inference</strong>
+                        Frames are normalized to (224, 224, 3) and passed into the Keras CNN model.
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-4">
+                <div class="d-flex gap-2">
+                    <span class="badge bg-primary rounded-circle p-2 font-mono" style="width:26px; height:26px;">3</span>
+                    <div>
+                        <strong class="text-white d-block">HUD Rendering</strong>
+                        OpenCV overlays real-time detection bounding tags and writes output video.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

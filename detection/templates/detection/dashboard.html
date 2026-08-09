@@ -1,0 +1,195 @@
+{% extends 'detection/base.html' %}
+
+{% block title %}Dashboard | CCTV Surveillance System{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-4 py-4">
+
+    <!-- Header & Welcome Banner -->
+    <div class="d-flex flex-wrap align-items-center justify-content-between mb-4 pb-2 border-bottom border-secondary">
+        <div>
+            <h2 class="font-heading text-white mb-1"><i class="fa-solid fa-gauge-high text-info me-2"></i> Surveillance Control Center</h2>
+            <p class="text-secondary small mb-0">Real-time deep learning activity recognition & surveillance video stream analysis.</p>
+        </div>
+        <div class="d-flex gap-2 mt-3 mt-md-0">
+            <a href="{% url 'detect' %}" class="btn btn-cyber">
+                <i class="fa-solid fa-cloud-arrow-up me-2"></i> Upload & Detect Video
+            </a>
+            <a href="{% url 'history' %}" class="btn btn-outline-cyber">
+                <i class="fa-solid fa-list-check me-2"></i> View Logs
+            </a>
+        </div>
+    </div>
+
+    <!-- Statistics Grid -->
+    <div class="row g-4 mb-4">
+        <!-- Stat 1: Total Detections -->
+        <div class="col-12 col-sm-6 col-xl-3">
+            <div class="glass-card stat-card">
+                <div class="stat-icon primary">
+                    <i class="fa-solid fa-film"></i>
+                </div>
+                <div class="stat-value text-white">{{ stats.total_count }}</div>
+                <div class="stat-label">Total Videos Analyzed</div>
+            </div>
+        </div>
+
+        <!-- Stat 2: Suspicious Detections -->
+        <div class="col-12 col-sm-6 col-xl-3">
+            <div class="glass-card stat-card" style="border-left: 4px solid var(--danger-red);">
+                <div class="stat-icon danger">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                </div>
+                <div class="stat-value text-danger">{{ stats.suspicious_count }}</div>
+                <div class="stat-label">Suspicious Threats</div>
+            </div>
+        </div>
+
+        <!-- Stat 3: Normal Detections -->
+        <div class="col-12 col-sm-6 col-xl-3">
+            <div class="glass-card stat-card" style="border-left: 4px solid var(--success-green);">
+                <div class="stat-icon success">
+                    <i class="fa-solid fa-shield-check"></i>
+                </div>
+                <div class="stat-value text-success">{{ stats.normal_count }}</div>
+                <div class="stat-label">Normal Activity</div>
+            </div>
+        </div>
+
+        <!-- Stat 4: Latest Detection Status -->
+        <div class="col-12 col-sm-6 col-xl-3">
+            <div class="glass-card stat-card">
+                <div class="stat-icon warning">
+                    <i class="fa-solid fa-clock"></i>
+                </div>
+                {% if stats.latest %}
+                    <div class="stat-value text-white fs-4 mb-1 text-truncate">{{ stats.latest.activity }}</div>
+                    <div class="stat-label">Latest Detection ({{ stats.latest.confidence|floatformat:1 }}%)</div>
+                {% else %}
+                    <div class="stat-value text-muted fs-4 mb-1">No Data</div>
+                    <div class="stat-label">Latest Activity</div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Section: Recent Detections & AI Model System Info -->
+    <div class="row g-4">
+        
+        <!-- Left: Recent Detections Table -->
+        <div class="col-12 col-lg-8">
+            <div class="glass-card">
+                <div class="glass-card-header">
+                    <h5 class="font-heading mb-0 text-white"><i class="fa-solid fa-clock-rotate-left me-2 text-info"></i> Recent Surveillance Logged Analysis</h5>
+                    <a href="{% url 'history' %}" class="btn btn-sm btn-outline-cyber">View All History</a>
+                </div>
+                <div class="glass-card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-cyber mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Video Title</th>
+                                    <th>Detected Activity</th>
+                                    <th>Confidence</th>
+                                    <th>Timestamp</th>
+                                    <th class="text-end">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for detection in recent_detections %}
+                                <tr>
+                                    <td>
+                                        <div class="fw-semibold text-white">{{ detection.title }}</div>
+                                        <span class="text-muted small font-mono">{{ detection.resolution }} • {{ detection.total_frames }} frames</span>
+                                    </td>
+                                    <td>
+                                        <span class="badge-cyber {{ detection.badge_color }}">
+                                            <i class="fa-solid {% if detection.is_suspicious %}fa-triangle-exclamation{% else %}fa-check{% endif %} me-1"></i>
+                                            {{ detection.activity }}
+                                        </span>
+                                    </td>
+                                    <td style="width: 140px;">
+                                        <div class="d-flex align-items-center gap-2">
+                                            <span class="small font-mono fw-bold">{{ detection.confidence|floatformat:1 }}%</span>
+                                            <div class="confidence-bar-wrapper flex-grow-1">
+                                                <div class="confidence-bar-fill {{ detection.badge_color }}" style="width: {{ detection.confidence }}%;"></div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="text-secondary small font-mono">
+                                        {{ detection.created_at|date:"M d, Y H:i" }}
+                                    </td>
+                                    <td class="text-end">
+                                        <a href="{% url 'result' detection.pk %}" class="btn btn-sm btn-outline-cyber">
+                                            <i class="fa-solid fa-eye me-1"></i> Result
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="5" class="text-center py-4 text-muted">
+                                        <i class="fa-solid fa-film mb-2 fs-3 d-block"></i> No video detections recorded yet. Upload a video to analyze!
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right: AI Model System Info & Quick Test Generator -->
+        <div class="col-12 col-lg-4">
+            <!-- AI Model Info Box -->
+            <div class="glass-card mb-4">
+                <div class="glass-card-header">
+                    <h5 class="font-heading mb-0 text-white"><i class="fa-solid fa-brain me-2 text-info"></i> Trained CNN Architecture</h5>
+                </div>
+                <div class="glass-card-body">
+                    <div class="d-flex align-items-center justify-content-between mb-3 pb-2 border-bottom border-secondary">
+                        <span class="text-secondary small">Model Status</span>
+                        <span class="badge bg-success bg-opacity-25 text-success border border-success font-mono">ACTIVE & READY</span>
+                    </div>
+                    <div class="d-flex align-items-center justify-content-between mb-3 pb-2 border-bottom border-secondary">
+                        <span class="text-secondary small">Input Tensor Dimensions</span>
+                        <span class="font-mono text-info fw-bold">{{ model_info.input_shape.0 }} × {{ model_info.input_shape.1 }} × {{ model_info.input_shape.2 }} RGB</span>
+                    </div>
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <span class="text-secondary small">Classes Monitored ({{ model_info.class_count }})</span>
+                    </div>
+                    <div class="d-flex flex-wrap gap-1">
+                        {% for cls in model_info.output_classes %}
+                            <span class="badge bg-dark border border-secondary text-light font-mono px-2 py-1">{{ cls }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Demo Video Generator Box -->
+            <div class="glass-card">
+                <div class="glass-card-header">
+                    <h5 class="font-heading mb-0 text-white"><i class="fa-solid fa-wand-magic-sparkles me-2 text-warning"></i> Quick Demo Evaluation</h5>
+                </div>
+                <div class="glass-card-body">
+                    <p class="text-secondary small mb-3">Don't have a test video handy? Generate a synthetic surveillance sample video instantly:</p>
+                    <div class="d-grid gap-2">
+                        <a href="{% url 'generate_demo_video' %}?type=Fighting" class="btn btn-sm btn-outline-cyber text-start">
+                            <i class="fa-solid fa-person-burst text-danger me-2"></i> Sample: Fighting Activity
+                        </a>
+                        <a href="{% url 'generate_demo_video' %}?type=Fire" class="btn btn-sm btn-outline-cyber text-start">
+                            <i class="fa-solid fa-fire text-warning me-2"></i> Sample: Fire Hazard
+                        </a>
+                        <a href="{% url 'generate_demo_video' %}?type=Normal" class="btn btn-sm btn-outline-cyber text-start">
+                            <i class="fa-solid fa-user-check text-success me-2"></i> Sample: Normal Activity
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+{% endblock %}
