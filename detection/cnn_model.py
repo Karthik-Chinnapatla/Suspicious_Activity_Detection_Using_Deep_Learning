@@ -22,7 +22,6 @@ class SuspiciousActivityCNNModel:
         self.input_shape = (224, 224, 3)
         self.output_classes = CLASS_LABELS
         self.is_loaded = False
-        self._load_model()
         self._initialized = True
 
     def reload_model(self):
