@@ -2,7 +2,7 @@
 
 A modern, production-grade Django web application for automated surveillance video analysis, frame extraction, and real-time activity recognition using Convolutional Neural Networks (CNN) and OpenCV.
 
-[![Live Demo](https://img.shields.io/badge/🌐_Live_Deployment-Click_Here-007acc?style=for-the-badge&logo=render)](https://suspicious-activity-detection-using-deep-learning.onrender.com)
+[![Live Demo]https://suspicious-activity-detection-using-deep.onrender.com
 
 ![License](https://img.shields.io/badge/License-MIT-blue.svg)
 ![Python](https://img.shields.io/badge/Python-3.11-brightgreen)
