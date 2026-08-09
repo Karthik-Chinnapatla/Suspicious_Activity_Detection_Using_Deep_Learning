@@ -1,4 +1,9 @@
 {
+  "functions": {
+    "api/index.py": {
+      "excludeFiles": "{node_modules/**,**/tensorflow/include/**,**/tensorflow/compiler/**,**/tensorboard/**,**/*.h,**/*.inc,**/*.a}"
+    }
+  },
   "rewrites": [
     {
       "source": "/static/(.*)",
