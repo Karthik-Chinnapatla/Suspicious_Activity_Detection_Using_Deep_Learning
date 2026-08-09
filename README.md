@@ -1,12 +1,13 @@
 # Suspicious Activity Detection System Using CNN & OpenCV
 
-A modern, production-grade Django web application for automated surveillance video analysis, frame extraction, and real-time deep learning activity recognition using Convolutional Neural Networks (CNN) and OpenCV.
+A modern, production-grade Django web application for automated surveillance video analysis, frame extraction, and real-time activity recognition using Convolutional Neural Networks (CNN) and OpenCV.
+
+[![Live Demo](https://img.shields.io/badge/🌐_Live_Deployment-Click_Here-007acc?style=for-the-badge&logo=render)](https://suspicious-activity-detection-using-deep-learning.onrender.com)
 
 ![License](https://img.shields.io/badge/License-MIT-blue.svg)
-![Python](https://img.shields.io/badge/Python-3.10%2B-brightgreen)
+![Python](https://img.shields.io/badge/Python-3.11-brightgreen)
 ![Django](https://img.shields.io/badge/Django-5.2-success)
-![TensorFlow](https://img.shields.io/badge/TensorFlow-2.21-orange)
-![OpenCV](https://img.shields.io/badge/OpenCV-5.0-blue)
+![OpenCV](https://img.shields.io/badge/OpenCV-4.8-blue)
 
 ---
 
